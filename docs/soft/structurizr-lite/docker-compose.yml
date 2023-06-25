@@ -1,0 +1,8 @@
+version: "3"
+services:
+    structurizr:
+        image: structurizr/lite
+        ports:
+            - "8080:8080"
+        volumes:
+          - $HOME/pack/Projects/altarix/marketplace/docs/praybook/structure/deploy/dsl/deploy-develop:/usr/local/structurizr
