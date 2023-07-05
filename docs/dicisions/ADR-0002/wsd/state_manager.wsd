@@ -1,0 +1,45 @@
+@startuml "States of a manager"
+skinparam linetype ortho
+
+
+[*] -u-> Registered
+[*] --> LogedIn
+Registered --> LogedIn
+LogedIn --> RequestsShown
+LogedIn --> UsersShown
+LogedIn --> TrainingsShown
+
+RequestsShown --> Accepted
+Accepted --> RequestsShown
+RequestsShown --> Denied
+Denied --> RequestsShown
+
+UsersShown --> PermissionGreanded
+PermissionGreanded --> UsersShown
+UsersShown --> PermissionRevoked
+PermissionRevoked --> UsersShown
+
+TrainingsShown --> TrainingCreated
+TrainingsShown --> TrainingUpdated
+TrainingCreated -r-> TrainingUpdated
+TrainingUpdated --> TrainingsShown
+TrainingCreated --> TrainingsShown
+
+RequestsShown -l-> [*]
+UsersShown -r-> [*]
+TrainingsShown -r-> [*]
+
+LogedIn: Вход\nсовершен
+Registered: Пользователь\nзарегистрирован
+
+UsersShown: Список пользователей показан
+TrainingsShown: Список курсов показан
+RequestsShown: Список заявок показан
+PermissionGreanded: Права назначены
+PermissionRevoked: Права отозваны
+TrainingUpdated: Курс сохранён
+TrainingCreated: Курс создан
+Accepted: Заявка принята
+Denied: Заявка отклонена 
+
+@enduml

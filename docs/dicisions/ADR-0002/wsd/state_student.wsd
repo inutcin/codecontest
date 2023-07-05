@@ -1,0 +1,53 @@
+@startuml "States of a student"
+skinparam linetype ortho
+
+
+[*] --> Registered
+[*] -r-> LogedIn
+Registered -l-> LogedIn
+LogedIn --> ShownAllNew
+LogedIn --> ShownAllAccepded
+LogedIn --> ShownAllDenied
+LogedIn --> ShownUsers
+LogedIn --> ShownTrainings
+
+ShownAllNew --> LogedIn
+ShownAllAccepded --> LogedIn
+ShownAllDenied --> LogedIn
+ShownUsers --> LogedIn
+ShownTrainings --> LogedIn
+
+ShownAllNew --> Accepted
+ShownAllNew --> Denied
+
+ShownAllAccepded --> Denied
+ShownAllDenied --> Accepted
+
+ShownUsers --> PermissionGranded
+ShownUsers --> PermissionRevoked
+ShownTrainings --> TrainingCreated
+ShownTrainings --> TrainingUpdated
+TrainingCreated -r-> TrainingUpdated
+TrainingUpdated --> ShownTrainings
+PermissionGranded --> ShownUsers
+PermissionRevoked --> ShownUsers
+
+Accepted -l-> ShownAllNew
+Denied --> ShownAllNew 
+
+LogedIn -r-> [*]
+
+LogedIn: Вход совершен
+Registered: Пользователь зарегистрирован
+ShownAllDenied: Отклонённые заявки показаны
+ShownAllAccepded: Принятые заявки показаны
+ShownAllNew: Все заявки показаны
+Accepted: Заявка принята
+Denied: Заявка отклонена
+ShownTrainings: Список курсов показан
+ShownUsers: Список пользователей показан
+TrainingCreated: Курс создан
+TrainingUpdated: Курс сохранён
+
+
+@enduml

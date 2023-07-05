@@ -1,0 +1,52 @@
+@startuml "States of a professor"
+skinparam linetype ortho
+
+
+[*] -l-> Registered
+[*] -r-> LogedIn
+Registered -r-> LogedIn
+LogedIn --> ShowAllCoaching
+LogedIn --> ShowMyCoaching
+
+ShowAllCoaching --> CoachingRequest
+ShowMyCoaching --> ContinueCoaching
+
+CoachingRequest --> Accept
+CoachingRequest -r-> Deny 
+
+Accept --> ShowAllCoaching
+Accept --> ContinueCoaching
+Deny ---> ShowAllCoaching
+
+ContinueCoaching --> ConditionUpdated
+ContinueCoaching -l-> CoachingDone 
+ContinueCoaching -r-> ConditionCreated
+ConditionCreated -l-> ConditionUpdated
+
+
+ConditionUpdated -l-> TestCreated
+ConditionUpdated --> ContinueCoaching
+ConditionUpdated --> TestUpdated
+
+TestCreated -r-> TestUpdated
+TestUpdated --> ConditionUpdated
+
+
+CoachingDone -l-> [*]
+Deny --> [*]
+
+Deny: Отказ в \nпреподавании \nна курсе
+Accept: Заявление \nна преподавание \nпринято
+CoachingRequest: Заявление \nна преподавание \nподано
+ShowAllCoaching: Все доступные\n для заявки\nна преподавание \nкурсы показаны
+ShowMyCoaching: Все одобренные \nпреподавателю\n курсы показаны
+ContinueCoaching: Список задач\nкурса показан
+LogedIn: Вход\nсовершен
+Registered: Пользователь\nзарегистрирован
+CoachingDone: Курс \nопубликован
+ConditionCreated: Условие \nзадачи \nсоздано
+ConditionUpdated: Условие\nзадачи\nсохранено
+TestCreated: Тест создан
+TestUpdated: Тест сохранён
+
+@enduml

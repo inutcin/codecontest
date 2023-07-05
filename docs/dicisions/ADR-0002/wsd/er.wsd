@@ -1,0 +1,141 @@
+@startuml "ER"
+
+skinparam linetype ortho
+hide circle
+
+
+entity user{
+    * id: integer <<generated>>
+    --
+    role_id: integer
+    ...
+}
+
+entity role {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+entity permission {
+    * id: integer <<generated>>
+    --
+    *user_id: integer
+    *role_id: integer
+}
+
+entity task {
+    * id: integer
+    --
+    training_id: integer
+    --
+    condition: text
+    ...
+}
+
+entity test {
+    * id: integer <<generated>>
+    --
+    * task_id: integer
+    --
+    checking_input: text
+    checking_output: text
+    ...
+}
+
+entity decition {
+    *id: integer <<generated>> 
+    --
+    *task_id: integer
+    *user_id
+    *language_id
+    --
+    code: text
+    ...
+}
+
+
+entity decition_test {
+    * id:integer <<generated>>
+    --
+    * test_id: integer
+    * decition_id: integer
+    --
+    reason_id: integer
+    result: enum('failed', 'passed')
+    ...
+}
+
+entity reason {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+
+entity training {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+entity student {
+    * id: integer <<generated>>
+    --
+    * training_id: integer
+    * user_id: integer
+    --
+    ...
+}
+
+entity professor {
+    * id: integer <<generated>>
+    --
+    training_id: integer
+    user_id: integer
+    --
+    ...
+}
+
+entity language {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+task -r-{ test
+task --{ decition
+decition }-- student 
+decition_test }-l- test
+decition_test }-l- decition
+reason -u-{ decition_test
+task }-l- training
+student }-u- training
+student }-- user
+professor }-u- training
+professor }-- user
+language -u-{ decition
+user -r-{ permission
+permission }-r- role
+
+
+note right of student: Договор со студентом о \nпоступлении на курс
+note right of professor: Договор с \nпреподавателем\n о проведении курса
+note right of user: Пользователи\n системы
+note right of decition: Отправленное\n решение\n задачи
+note right of training: Преподаваемый\n курс
+note right of task: Условие\n задачи
+note right of test: Критерии оценки\n задачи (тесты) 
+
+note right of decition_test: Результаты проверки\n задачи
+note right of reason: Причина отказа\n в приёме \nрешения
+note right of language: Язык \nпрограммрования
+
+note right of permission: Права\nпользователей
+note right of role: Системные\n роли
+
+@enduml
