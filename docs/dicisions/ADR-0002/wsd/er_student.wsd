@@ -48,13 +48,10 @@ entity decition {
     *id: integer <<generated>> 
     --
     *task_id: integer
-    *student_id
+    *user_id
     *language_id
     --
     code: text
-    success: boolean
-    attempt: integer
-    done_at: timestamp
     ...
 }
 
