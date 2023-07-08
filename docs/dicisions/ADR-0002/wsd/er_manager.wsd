@@ -11,7 +11,7 @@ entity user{
     ...
 }
 
-entity decition {
+entity decision {
     *id: integer <<generated>> 
     --
     *task_id: integer
@@ -66,21 +66,22 @@ entity task {
     ...
 }
 
-decition }-- student 
+task --{ decision
+decision }-- student 
 student }-u- training
 student }-- user
 professor }-u- training
 professor }-- user
-language -u-{ decition
+language -u-{ decision
 task }-l- training
 
 
 note right of student: Договор со студентом о \nпоступлении на курс
 note right of professor: Договор с \nпреподавателем\n о проведении курса
 note right of user: Пользователи\n системы
-note right of decition: Отправленное\n решение\n задачи
+note right of decision: Отправленное\n решение\n задачи
 note right of training: Преподаваемый\n курс
-
+note right of task: Условие\n задачи
 note right of language: Язык \nпрограммрования
 
 

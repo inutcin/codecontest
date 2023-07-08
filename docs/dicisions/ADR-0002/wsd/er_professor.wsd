@@ -1,0 +1,54 @@
+@startuml "ER professor"
+
+skinparam linetype ortho
+hide circle
+
+
+
+entity task {
+    * id: integer
+    --
+    training_id: integer
+    --
+    condition: text
+    ...
+}
+
+entity test {
+    * id: integer <<generated>>
+    --
+    * task_id: integer
+    --
+    checking_input: text
+    checking_output: text
+    ...
+}
+
+
+entity training {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+entity professor {
+    * id: integer <<generated>>
+    --
+    training_id: integer
+    user_id: integer
+    --
+    ...
+}
+
+task -r-{ test
+task }-l- training
+professor }-u- training
+
+
+note right of professor: Договор с \nпреподавателем\n о проведении курса
+note right of training: Преподаваемый\n курс
+note right of task: Условие\n задачи
+note right of test: Критерии оценки\n задачи (тесты) 
+
+@enduml
