@@ -1,0 +1,70 @@
+@startuml "ER 2 decision_test"
+
+skinparam linetype ortho
+hide circle
+
+entity test {
+    * id: integer <<generated>>
+    --
+    * task_id: integer
+    --
+    checking_input: text
+    checking_output: text
+    ...
+}
+
+entity decision {
+    *id: integer <<generated>> 
+    --
+    *task_id: integer
+    *student_id
+    *language_id
+    --
+    code: text
+    success: boolean
+    attempt: integer
+    done_at: timestamp
+    ...
+}
+
+
+entity decision_test {
+    * id:integer <<generated>>
+    --
+    * test_id: integer
+    * decision_id: integer
+    --
+    reason_id: integer
+    result: enum('failed', 'passed')
+    ...
+}
+
+entity reason {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+
+entity language {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+decision_test }-u- test
+decision_test }-l- decision
+reason -u-{ decision_test
+language -u-{ decision
+
+
+note right of decision: Отправленное\n решение\n задачи
+note right of test: Критерии оценки\n задачи (тесты) 
+note right of decision_test: Результаты проверки\n задачи
+note right of reason: Причина отказа\n в приёме \nрешения
+note right of language: Язык \nпрограммрования
+
+
+@enduml

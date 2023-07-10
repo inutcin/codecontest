@@ -1,0 +1,45 @@
+@startuml "ER 2 cert"
+
+skinparam linetype ortho
+hide circle
+
+
+entity task {
+    * id: integer
+    --
+    training_id: integer
+    --
+    condition: text
+    ...
+}
+
+entity decision {
+    *id: integer <<generated>> 
+    --
+    *task_id: integer
+    *student_id
+    *language_id
+    --
+    code: text
+    success: boolean
+    attempt: integer
+    done_at: timestamp
+    ...
+}
+
+
+entity training {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+task --{ decision
+task }-l- training
+
+
+note right of decision: Отправленное\n решение\n задачи
+note right of training: Преподаваемый\n курс
+note right of task: Условие\n задачи
+@enduml

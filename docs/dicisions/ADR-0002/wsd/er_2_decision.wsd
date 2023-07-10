@@ -1,0 +1,32 @@
+@startuml "ER 2 decision"
+
+skinparam linetype ortho
+hide circle
+
+entity decision {
+    *id: integer <<generated>> 
+    --
+    *task_id: integer
+    *student_id
+    *language_id
+    --
+    code: text
+    success: boolean
+    attempt: integer
+    done_at: timestamp
+    ...
+}
+
+entity language {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+language -u-{ decision
+
+note right of decision: Отправленное\n решение\n задачи
+note right of language: Язык \nпрограммрования
+
+@enduml

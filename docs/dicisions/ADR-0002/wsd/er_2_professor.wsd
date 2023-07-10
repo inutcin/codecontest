@@ -1,0 +1,17 @@
+@startuml "ER 2 professor"
+
+skinparam linetype ortho
+hide circle
+
+entity professor {
+    * id: integer <<generated>>
+    --
+    training_id: integer
+    user_id: integer
+    --
+    ...
+}
+
+note right of professor: Договор с \nпреподавателем\n о проведении курса
+
+@enduml

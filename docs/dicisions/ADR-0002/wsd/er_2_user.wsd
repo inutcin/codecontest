@@ -1,0 +1,38 @@
+@startuml "ER 2 user"
+
+skinparam linetype ortho
+hide circle
+
+
+entity user{
+    * id: integer <<generated>>
+    --
+    role_id: integer
+    ...
+}
+
+entity role {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+entity permission {
+    * id: integer <<generated>>
+    --
+    *user_id: integer
+    *role_id: integer
+}
+
+
+user -d-{ permission
+permission }-u- role
+
+
+note right of user: Пользователи\n системы
+
+note right of permission: Права\nпользователей
+note right of role: Системные\n роли
+
+@enduml

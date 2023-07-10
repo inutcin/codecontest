@@ -1,0 +1,17 @@
+@startuml "ER 2 training"
+
+skinparam linetype ortho
+hide circle
+
+entity training {
+    * id: integer <<generated>>
+    --
+    name: string
+    ...
+}
+
+
+note right of training: Преподаваемый\n курс
+
+
+@enduml

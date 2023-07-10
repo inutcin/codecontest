@@ -1,0 +1,18 @@
+@startuml "ER 2 test"
+
+skinparam linetype ortho
+hide circle
+
+entity test {
+    * id: integer <<generated>>
+    --
+    * task_id: integer
+    --
+    checking_input: text
+    checking_output: text
+    ...
+}
+
+note right of test: Критерии оценки\n задачи (тесты) 
+
+@enduml
