@@ -1,0 +1,71 @@
+@startuml "Components"
+
+interface "HTTP" as Entrance
+interface "Backend API" as AuthBack 
+interface "Queue Broker" as Queue
+interface "Message Broker" as Message
+actor "Frontend" as Front
+
+Front --> Entrance
+
+package "Application service" {
+    Entrance -d-> [User]
+    Entrance --> [Training]
+    Entrance --> [Professor]
+    Entrance --> [Student]
+    Entrance --> [Task]
+    Entrance --> [Test]
+    Entrance --> [Decision]
+    Entrance --> [Report]
+    Entrance --> [Cert]
+}
+
+package "Authentication\nand\nauthorization\nservice" {
+    [User] --> AuthBack 
+    AuthBack --> [Auth] 
+} 
+
+
+package "Processing service" {
+    [Decision] --> Queue
+    Queue --> [DecisionTest]
+    [DecisionTest] -u-> Entrance
+}
+
+package "Documents service" {
+    Message -u-> [Report Generator]
+    Message -u-> [Cert Generator]
+}
+
+database "Documents" {
+    [Certs Storage]
+    [Reports Storage]
+}
+
+database "Users" {
+    [Users and roles]
+}
+
+database "Content" {
+    [Contest data]
+}
+
+database "Contract" {
+    [User contracts]
+}
+
+
+[DecisionTest] -u-> Message
+[Cert Generator] .u.> [Certs Storage]
+[Report Generator] .u.> [Reports Storage]
+[Reports Storage] .u.> Report
+[Certs Storage] .u.> Cert
+[Auth] ..> [Users and roles]
+[Decision] --> AuthBack
+[Task] ..> [Contest data]
+[Training] ..> [Contest data]
+[Test] ..> [Contest data]
+[Student] ..> [User contracts]
+[Professor] ..> [User contracts]
+
+@enduml
