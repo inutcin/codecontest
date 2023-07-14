@@ -1,0 +1,75 @@
+@startuml "Sequence student"
+
+actor "Student frontend" as front
+participant "Decision component" as decision
+database "Contest DB" as contestdb
+participant "Authorization component" as auth
+database "User and roles DB" as userdb
+queue "Queue broker" as queue
+
+front -> decision : /api/v1/decision/{task_id}/{uuid}
+activate decision
+note right
+    Студент отправляет решение на проверку, передав код решения,
+    id задачи, ключ идемпотентности и ID сессии
+endnote
+
+decision -> auth : /api/v1/back/user/permissions
+activate auth
+note left
+    Компонент авторизаци запрашивает
+    в БД права и роли пользователя
+end note
+
+auth -> userdb: session_id, task_id
+activate userdb
+
+userdb -> auth: permissions,roles
+deactivate userdb
+
+
+auth -> decision: permission, roles
+decision -> decision: permission checkup    
+note left
+    Проверяется имеет ли пользователь
+    право отправлять решение для этой
+    задачи 
+end note
+
+
+alt#gold #FFE8E8
+    decision -> front: Access denied
+    note right
+        Отправляем сообщение
+        что прав на отправку
+        решения по этой задаче
+        у пользователя нет 
+    end note
+else #E8FFE8
+
+    decision -> contestdb: put decision into DB
+    activate contestdb
+    note left
+        Сохраняем решение в базе данных 
+        соревнований
+    end note
+    contestdb -> decision: success
+    deactivate contestdb
+
+
+
+    decision --> queue: push into queue
+    note left
+        Отправляем решение в очередь на 
+        проверку
+    end note
+    decision -> front: await for testing
+    deactivate auth
+
+    note right
+        Сообщаем студенту, что надо подождать тестирования задачи
+    end note
+
+end
+
+@enduml

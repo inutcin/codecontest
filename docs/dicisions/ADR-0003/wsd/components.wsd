@@ -1,6 +1,6 @@
 @startuml "Components"
 
-interface "HTTP" as Entrance
+interface "Frontend API" as Entrance
 interface "Backend API" as AuthBack 
 interface "Queue Broker" as Queue
 interface "Message Broker" as Message
@@ -29,12 +29,15 @@ package "Authentication\nand\nauthorization\nservice" {
 package "Processing service" {
     [Decision] --> Queue
     Queue --> [DecisionTest]
-    [DecisionTest] -u-> Entrance
 }
 
 package "Documents service" {
     Message -u-> [Report Generator]
     Message -u-> [Cert Generator]
+}
+
+package "Message service" {
+    Message --> [Sender]
 }
 
 database "Documents" {
@@ -54,6 +57,10 @@ database "Contract" {
     [User contracts]
 }
 
+database "Desition test" {
+    [Decision history]
+}
+
 
 [DecisionTest] -u-> Message
 [Cert Generator] .u.> [Certs Storage]
@@ -65,6 +72,9 @@ database "Contract" {
 [Task] ..> [Contest data]
 [Training] ..> [Contest data]
 [Test] ..> [Contest data]
+[DecisionTest] ..> [Decision history]
+
+[Decision] ..> [Contest data]
 [Student] ..> [User contracts]
 [Professor] ..> [User contracts]
 

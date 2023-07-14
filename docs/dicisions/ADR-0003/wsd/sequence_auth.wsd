@@ -1,0 +1,67 @@
+@startuml "Sequence Auth"
+actor "Frontend" as front
+participant "User component" as user
+participant "Authentification component" as auth
+database "Users and roles DB" as userdb
+
+activate front
+front -> user : /api/v1/front/user/login
+Activate user
+note right
+    Пользователь отправляет свои email и пароль
+endnote
+
+user -> auth: /api/v1/back/user/login
+activate auth
+
+auth -> userdb: credentials
+activate userdb
+note left
+    email и пароль 
+    сравниваются со
+    значениями в БД
+endnote
+
+alt#gold #LightPink Ошибка аутентификаци
+    userdb -> auth: return failed
+    auth -> user: return failed
+    user -> front: Authentification failed
+else #LightGreen Успешная аутентификация
+    userdb -> auth: return success
+    deactivate userdb
+
+    auth -> auth: generate session_id
+    note left
+        Генерируется 
+        ID сессии
+    endnote
+
+    auth --> userdb: put session_id
+    note left
+        Id сессии 
+        сохраняется 
+        в БД
+    endnote
+
+    auth -> user: return session_id
+    deactivate auth
+    note left
+        ID сессии
+        возвращается
+        клиенту
+    endnote
+
+    user -> front : return session_id
+    deactivate user
+
+    front -> front: save session_id 
+    note right
+        ID сессии
+        сохраняется
+        для последующих 
+        запросов
+    endnote
+end
+
+
+@enduml

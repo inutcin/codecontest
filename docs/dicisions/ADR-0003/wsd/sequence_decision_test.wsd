@@ -1,0 +1,62 @@
+@startuml "Sequence decition test"
+
+queue "Queue broker" as queue
+control "Decision test\ncomponent" as decisiontest
+database "Decision tests\nDB" as decisiontestdb
+participant "Test\ncomponent" as test
+database "Contest\nDB" as contestdb 
+participant "Decision\ncomponent" as decision 
+queue "Message broker" as message
+control "Sender\ncomponent" as sender
+actor "Student" as student
+
+decisiontest -> queue: job request
+activate queue
+
+queue -> decisiontest: decision job
+
+activate decisiontest
+decisiontest -> test: /api/v1/back/tests/{task_id}
+activate test
+
+test -> contestdb: task_id 
+activate contestdb
+contestdb -> test: tests
+deactivate contestdb
+
+test -> decisiontest: tests
+deactivate test
+
+
+activate decisiontest #88F8FF
+decisiontest -> decisiontest: compiling
+decisiontest -> decisiontest: runnig
+decisiontest -> decisiontest: checkup
+deactivate decisiontest
+
+decisiontest ->decisiontestdb: put tests history
+activate decisiontestdb
+decisiontestdb -> decisiontest: success
+deactivate decisiontestdb
+
+decisiontest -> decision: /api/v1/back/decision/save/{decision_id}
+activate decision
+decision -> contestdb: update
+activate contestdb
+contestdb -> decision: success
+deactivate contestdb
+
+decision -> decisiontest: success
+deactivate decision
+decisiontest --> message: decision test result    
+
+sender -> message
+activate message
+message -> sender
+deactivate message
+activate sender
+sender --> student: decision test\nresult 
+
+
+
+@enduml
