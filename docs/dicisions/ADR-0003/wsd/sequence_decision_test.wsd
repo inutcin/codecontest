@@ -14,10 +14,18 @@ decisiontest -> queue: job request
 activate queue
 
 queue -> decisiontest: decision job
+note right
+    Получаем из очереди очередное решение на проверку
+end note
+deactivate queue
 
 activate decisiontest
 decisiontest -> test: /api/v1/back/tests/{task_id}
 activate test
+note right
+    Запрашиваем список тестов для задачи, решение которой
+    мы проверяем
+end note
 
 test -> contestdb: task_id 
 activate contestdb
@@ -30,32 +38,62 @@ deactivate test
 
 activate decisiontest #88F8FF
 decisiontest -> decisiontest: compiling
+note right
+    Компилируем код
+end note
 decisiontest -> decisiontest: runnig
+note right
+    Запускаем на тестовых данных
+end note
 decisiontest -> decisiontest: checkup
+note right
+    Сверяем результаты запусков на входных тествых 
+    данных с выходными тестовыми данными
+end note
 deactivate decisiontest
 
 decisiontest ->decisiontestdb: put tests history
 activate decisiontestdb
+note right
+    Сохраняем результаты прохождения решением тестов
+end note
 decisiontestdb -> decisiontest: success
 deactivate decisiontestdb
 
 decisiontest -> decision: /api/v1/back/decision/save/{decision_id}
 activate decision
+note right
+    Запрашиваем обновление информции о решении 
+    (выносим вердикт)
+end note
 decision -> contestdb: update
 activate contestdb
+note left
+    Сохраняем состояние решения в БД
+end note
 contestdb -> decision: success
 deactivate contestdb
 
 decision -> decisiontest: success
 deactivate decision
+deactivate decisiontest
 decisiontest --> message: decision test result    
 
 sender -> message
 activate message
+note left
+    Отправляем сообщение о завершении проверки решения всем подписчикам,
+    например генератору отчетов, сертификатов или рассыльщику сообщений
+end note
+
 message -> sender
 deactivate message
 activate sender
 sender --> student: decision test\nresult 
+note left
+    Подписанный на топик рассыльщик отправляет обратную связь по 
+    решению задачи студенту
+end note
 
 
 
