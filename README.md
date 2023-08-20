@@ -48,6 +48,7 @@
 ## Спортивное программирование 
 
 ![sportprog](./docs/resources/mainpage/sport-programmisty.jpg)
+
 Вид киберспорта. За несколько часов участники 
 должны написать программы для решения математических и алгоритмических задач, 
 затем их результаты оценивают судьи. 
@@ -64,6 +65,7 @@ stdin/stdout.
 принятым равилам. 
 
 Наиболее известная и активная online judge система - [codeforges](https://codeforces.com/).
+
 ![](./docs/resources/mainpage/codeforces-sponsored-by-ton.png)
 
 
