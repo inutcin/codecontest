@@ -1,0 +1,11 @@
+version: "2.2"
+services:
+    app:
+        image: codecontest-app-laravel
+        container_name: codecontest-app-laravel-1
+        ports:
+            - "8801:80"
+        volumes:
+            - ../../../../../../src/backend/services/application/laravel:/var/www/html
+        command:
+            /app.sh

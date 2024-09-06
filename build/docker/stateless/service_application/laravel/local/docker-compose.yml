@@ -1,0 +1,15 @@
+version: "2.2"
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: app.Dockerfile
+      image: codecontest-app-laravel
+      args: 
+        - HOST_UID=$HOST_UID
+  web:
+    build: 
+      context: .
+      image: codecontest-web-laravel
+      dockerfile: web.Dockerfile
+
