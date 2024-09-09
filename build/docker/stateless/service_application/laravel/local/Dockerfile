@@ -2,7 +2,6 @@ FROM php:8.2-fpm
 
 MAINTAINER davojan
 
-#RUN sed -i "s/deb.debian.org/ftp.deb.debian.org/g" /etc/apt/sources.list.d/debian.sources
 RUN apt-get update && \
         apt-get install -y \
         nginx \

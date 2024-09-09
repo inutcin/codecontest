@@ -1,0 +1,25 @@
+version: "2.2"
+services:
+    db_application:
+        image: codecontest-app-database
+        container_name: codecontest-app-database-1
+        ports:
+            - "$DB_PORT:5432"
+        volumes:
+            - db_application:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: $DB_USER
+            POSTGRES_PASSWORD: $DB_PASS
+            POSTGRES_DB: $DB_DATABASE
+        networks:
+            net:
+volumes:
+    db_application:
+networks:
+    net:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                -
+                    subnet: $NETWORK

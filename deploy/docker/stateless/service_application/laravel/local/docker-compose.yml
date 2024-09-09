@@ -9,3 +9,11 @@ services:
             - ../../../../../../src/backend/services/application/laravel:/var/www/html
         command:
             /app.sh
+        environment:
+            DB_USERNAME: $DB_USER
+            DB_PASSWORD: $DB_PASS
+            DB_DATABASE: $DB_DATABASE
+            DB_HOST: $HOST_IP
+            DB_PORT: $DB_PORT
+            DB_CONNECTION: $DB_CONNECTION
+
